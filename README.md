@@ -23,7 +23,7 @@ This repository offers two versions of the code, one with **GPT-4o** using ***Op
 Feel free to use the one that suits you best.
 
 ### For Cheatguard-GPT
-Use your own **Open AI API-key**.
+This codes uses ***GPT-4o***. So please set your own **Open AI API-key**.
 
 For best practices, create a variable `OPENAI_API_KEY` under a ***.env*** file.
 
