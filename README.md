@@ -91,6 +91,8 @@ After filtering the extracted data:
 
 - The e-mail is sent by using **OAuth2** with ***Gmail API***. The details on how to configure it are detailed in the next section.
 
+- The `SENDER` and `RECEIVER` variables in the **.env** file are used to store the emails of the ai-agent and the administrator.
+
 ## Configuring Google Cloud Console
 
 Please follow the steps below to create your Credentials:
