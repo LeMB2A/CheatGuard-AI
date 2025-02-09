@@ -3,7 +3,7 @@ import openai
 from googlesearch import search
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import os
 import pickle
@@ -139,7 +139,7 @@ def format_json_output(title, description, authors, url, year):
         "year": year,
         "url": url,
     }
-    return json.dumps(article, indent=4)
+    return json.dumps(article, indent=5)
 
 
 ### EMAIL PART
@@ -223,6 +223,12 @@ def send_email(sender, to, body):
 def main():
 
     # Step 1: Initialize Search Query
+    # Get last month's date
+    last_month_date = datetime.today().replace(day=1) - timedelta(days=1)
+    last_month_name = last_month_date.strftime('%B')  # Full month name (e.g., "January")
+    last_month_year = last_month_date.strftime('%Y')  # Year (e.g., "2025")
+
+    # Create the search query for last month
     user_query = f"Latest articles about Cheating Techniques in Education in {datetime.now().strftime('%B') } {datetime.now().strftime('%Y')}"
     print(f"User query: {user_query}")
 
