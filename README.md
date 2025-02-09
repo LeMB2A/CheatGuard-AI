@@ -32,21 +32,37 @@ Once downloaded, modify the used model in **line 92** and in **line 114**: `resp
 ## Understanding the AI-agent's workflow
 The AI Agent's pipeline encompasses **5 ordered steps**:
 
-***1- Web Search:***
+***1- Query Formulation:***
 
-- A specific query is hard-coded to make the script search for the targetted content when started. The query that we opted for is: `f"Recent Papers about Cheating in Education in {datetime.now().strftime('%B') } {datetime.now().strftime('%Y')}"`, which allows to search for the latest articles published in the current month.
+The script starts by formulating a precise search query:
 
-- The program performs a web search on Google with the query, and returns a list of found URLs, limited to a specified number of results, which by default is: `num_results=3`. **N.B:** The program allows to restrict the browsing to specific websites, or exclude some websites from the search, e.g: `search_google(user_query, num_results=3, include_sites["arxiv.org"],  exclude_sites=["researchgate.net"])`. We restricted the script from finding articles on [Research Gate](https://www.researchgate.net/) as it disallows the client from extracting content.
+- The query is **hard-coded** to make the script search for the targetted content when started.
+  
+- The query that we opted for is: `f"Recent Papers about Cheating in Education in {datetime.now().strftime('%B') } {datetime.now().strftime('%Y')}"`, which allows to search for the latest articles published in the **current month**.
 
-***2- Content Extraction:***
+- Feel free to modify the query in order to find the **optimal** formulation.
+
+***2- Web Search***
+
+After defining a search query:
+
+- The program performs a web search on **Google** with the query, and returns a list of found URLs.
+
+- The number of URLs is a **parameter** that can be modified based on the need. The **default value** is: `num_results=3`.
+
+- The program allows to **restrict** the browsing to specific websites, or **exclude** some websites from the search, e.g: `search_google(user_query, num_results=3, include_sites["arxiv.org"],  exclude_sites=["researchgate.net"])`. We restricted the script from finding articles on [Research Gate](https://www.researchgate.net/) as it disallows the client from extracting content.
+
+***3- Content Extraction:***
 
 After finding interesting URLs, the script starts extracting meaningful content from them:
 
 - The script removes the contents of unwanted sections, such as ***nav*** and ***footer***, and unwanted classes, such as ***extra-services*** of [Arxiv](https://www.arxiv.org). These parts will only overwhelm the LLM when processing the web content.
   
-- After that, the script looks for the main content of a web page by searching for specific classes, such ***main*** or ***article***. The collected information from those sections is then passed to an LLM for filtering.
+- After that, the script looks for the main content of a web page by searching for specific classes, such as ***main*** or ***article*** sections: `main_content = soup.find("main") or soup.find("article", id="main") or soup.find("div", {"role": "main"}) or soup.find("div", {"id": "main-content"}) or soup.find("div", class_="ltx_page_content")`.
 
-***3- Content Filtering:***
+-   The collected information from those sections is then passed to an LLM for filtering.
+
+***4- Content Filtering:***
 
 Once the web content is extracted from the URLs, the script starts filtering them:
 
@@ -54,12 +70,14 @@ Once the web content is extracted from the URLs, the script starts filtering the
   
 - The LLM is used to keep only the most-important information from the extracted contents, focusing on the **Cheating Technique** description, and its **prevention methods**
   
-***4- Data Extraction***
+***5- Data Formatting and E-mail Sending***
 
-- Using the local LLM to extract the main attributes of the extracted articles (Title, Authors, Description, Year)
-  
-***5- Email Sending***
+After filtering the extracted data:
 
-- The Extracted Data is formatted in JSON
+- We use the LLM to **format** the main attributes of the found articles to **JSON** format, focusing on the title, description, authors, URL, and year of publication.
 
-- The Data is sent by e-mail to the First Authors
+- The formatted output is sent **by e-mail** to the **administrator** in order to validate the information before updating the **Knowledge Base**.
+
+- The e-mail is sent by using **OAuth2** with ***Gmail API***. The details on how to configure it are detailed in Section [OAuth2](https://github.com/LeMB2A/CheatGuard-AI/edit/main/README.md#oauth2)
+
+## [Configure Google Cloud Console](#oauth2)
