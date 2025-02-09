@@ -209,12 +209,12 @@ def send_email(sender, to, body):
 def main():
 
     # Step 1: Initialize Search Query
-    # Get last month's date
+        # Get last month's date
     last_month_date = datetime.today().replace(day=1) - timedelta(days=1)
     last_month_name = last_month_date.strftime('%B')  # Full month name (e.g., "January")
     last_month_year = last_month_date.strftime('%Y')  # Year (e.g., "2025")
 
-    # Create the search query for last month
+        # Create the search query for last month
     user_query = f"Recent Papers about Cheating in Education in {last_month_name} {last_month_year}"
     print(f"User query: {user_query}")
 
