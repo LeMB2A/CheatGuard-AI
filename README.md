@@ -110,6 +110,87 @@ Please follow the steps below to create your Credentials:
   
   ## Automating the Execution
 
-  Once everything is working, it is preferable to make the script's execution periodical automatically.
+  Once everything is working, it is preferable to make the script's execution periodical automatically. We chose to execute our program at the beginning of **every month**. To set this up, please follow these steps according to what Operating System you are using:
 
-  - 
+### On Windows:
+
+1. Open the **Task Scheduler** and create a **Basic Task**.
+2. Name it `CheatGuard`.
+3. Select a **Monthly** trigger, and make it execute on the **1st day of each month**, at `00:01` AM, for example .
+4. Select the program to start as: `python`, and add the argument:  
+     ```
+     "C:\path\to\your\ai-agent.py"
+     ```
+   As well as the Start-in folder of your current script:  
+     ```
+     C:\path\to\your\script_folder\
+     ```
+5. Click **Finish** and ensure the task is enabled.
+
+---
+## **2️⃣ Linux (Cron Job)**
+### **Steps:**
+1. Open a terminal.
+2. Run:
+   ```sh
+   crontab -e
+   ```
+3. Add the following line at the end of the file:
+   ```sh
+   0 0 1 * * /usr/bin/python3 /path/to/ai-agent.py >> /path/to/logfile.log 2>&1
+   ```
+4. Save and exit (`Ctrl + X`, then `Y`, then `Enter`).
+
+### **Explanation:**
+- `0 0 1 * *` → Runs at **midnight (00:00) on the 1st day of every month**.
+- `/usr/bin/python3` → Full path to Python (use `which python3` to verify).
+- `>> /path/to/logfile.log 2>&1` → Logs output for debugging.
+
+---
+## **3️⃣ macOS (Launchd)**
+### **Steps:**
+1. Open Terminal.
+2. Create a LaunchAgent:
+   ```sh
+   nano ~/Library/LaunchAgents/com.aiagent.monthly.plist
+   ```
+3. Add the following XML content:
+   ```xml
+   <?xml version="1.0" encoding="UTF-8"?>
+   <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+   <plist version="1.0">
+       <dict>
+           <key>Label</key>
+           <string>com.aiagent.monthly</string>
+
+           <key>ProgramArguments</key>
+           <array>
+               <string>/usr/bin/python3</string>
+               <string>/path/to/ai-agent.py</string>
+           </array>
+
+           <key>StartCalendarInterval</key>
+           <dict>
+               <key>Day</key>
+               <integer>1</integer>
+               <key>Hour</key>
+               <integer>0</integer>
+               <key>Minute</key>
+               <integer>0</integer>
+           </dict>
+
+           <key>RunAtLoad</key>
+           <true/>
+       </dict>
+   </plist>
+   ```
+4. Save (`Ctrl + X`, then `Y`, then `Enter`).
+5. Load the job:
+   ```sh
+   launchctl load ~/Library/LaunchAgents/com.aiagent.monthly.plist
+   ```
+6. Verify:
+   ```sh
+   launchctl list | grep aiagent
+   ```
+
