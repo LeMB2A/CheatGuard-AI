@@ -121,51 +121,52 @@ Please follow the steps below to create your Credentials:
      ```
      "C:\path\to\your\script_folder\cheatguard-gpt.py"
      ```
+     or
+     ```
+     "C:\path\to\your\script_folder\cheatguard-ollama.py"
+     ```
+     
    As well as the starting folder of your script as the same folder where your Python program is:  
      ```
      C:\path\to\your\script_folder\
      ```
-5. Click **Finish** and ensure the task is enabled.
+6. Click **Finish** and ensure the task is enabled.
 
 ### On Linux:
 
-1. Open a terminal.
-2. Run:
+1. Open a terminal and run the following command to open **Crontab**:
    ```sh
    crontab -e
    ```
-3. Add the following line at the end of the file:
+2. Add the following line at the end of the file:
    ```sh
-   0 0 1 * * /usr/bin/python3 /path/to/ai-agent.py >> /path/to/logfile.log 2>&1
+   0 0 1 * * /usr/bin/python3 /path/to/cheatguard-ollama.py >> /path/to/cheatguard-logs.log 2>&1
    ```
-4. Save and exit (`Ctrl + X`, then `Y`, then `Enter`).
-
-### **Explanation:**
-- `0 0 1 * *` → Runs at **midnight (00:00) on the 1st day of every month**.
-- `/usr/bin/python3` → Full path to Python (use `which python3` to verify).
-- `>> /path/to/logfile.log 2>&1` → Logs output for debugging.
-
----
-## **3️⃣ macOS (Launchd)**
-### **Steps:**
-1. Open Terminal.
-2. Create a LaunchAgent:
+   or
    ```sh
-   nano ~/Library/LaunchAgents/com.aiagent.monthly.plist
+   0 0 1 * * /usr/bin/python3 /path/to/cheatguard-gpt.py >> /path/to/cheatguard-logs.log 2>&1
    ```
-3. Add the following XML content:
+3. Save and exit.
+   
+### On macOS:
+
+1. Open Terminal and create a LaunchAgent as follows:
+   ```sh
+   nano ~/Library/LaunchAgents/com.cheatguard.monthly.plist
+   ```
+2. Add the following XML content:
    ```xml
    <?xml version="1.0" encoding="UTF-8"?>
    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
    <plist version="1.0">
        <dict>
            <key>Label</key>
-           <string>com.aiagent.monthly</string>
+           <string>com.cheatguard.monthly</string>
 
            <key>ProgramArguments</key>
            <array>
                <string>/usr/bin/python3</string>
-               <string>/path/to/ai-agent.py</string>
+               <string>/path/to/cheatguard-ollama.py</string> <!-- or <string>/path/to/cheatguard-gpt.py</string> -->
            </array>
 
            <key>StartCalendarInterval</key>
@@ -183,13 +184,8 @@ Please follow the steps below to create your Credentials:
        </dict>
    </plist>
    ```
-4. Save (`Ctrl + X`, then `Y`, then `Enter`).
-5. Load the job:
+3. Save the file then load the job as follows:
    ```sh
-   launchctl load ~/Library/LaunchAgents/com.aiagent.monthly.plist
-   ```
-6. Verify:
-   ```sh
-   launchctl list | grep aiagent
+   launchctl load ~/Library/LaunchAgents/com.cheatguard.monthly.plist
    ```
 
