@@ -36,17 +36,23 @@ The AI Agent's pipeline encompasses **5 ordered steps**:
 
 - A specific query is hard-coded to make the script search for the targetted content when started. The query that we opted for is: `f"Recent Papers about Cheating in Education in {datetime.now().strftime('%B') } {datetime.now().strftime('%Y')}"`, which allows to search for the latest articles published in the current month.
 
-- The program performs a web search on Google with the query, and returns a list of found URLs, limited to a specified number of results, which by default is: `num_results=3`. **N.B:** The program allows to restrict the browsing to specific websites, or exclude some websites from the search. For instance, we restricted the script from finding articles on [Research Gate](https://www.researchgate.net/) as it restricts the client from extracting content.
+- The program performs a web search on Google with the query, and returns a list of found URLs, limited to a specified number of results, which by default is: `num_results=3`. **N.B:** The program allows to restrict the browsing to specific websites, or exclude some websites from the search, e.g: `search_google(user_query, num_results=3, include_sites["arxiv.org"],  exclude_sites=["researchgate.net"])`. We restricted the script from finding articles on [Research Gate](https://www.researchgate.net/) as it disallows the client from extracting content.
 
-***2- Content Extraction***
+***2- Content Extraction:***
 
-- Removing contents of unwanted sections (Headers, Footers, etc...)
+After finding interesting URLs, the script starts extracting meaningful content from them:
 
-- Focusing on main articles and sections of a web page
+- The script removes the contents of unwanted sections, such as ***nav*** and ***footer***, and unwanted classes, such as ***extra-services*** of [Arxiv](https://www.arxiv.org). These parts will only overwhelm the LLM when processing the web content.
+  
+- After that, the script looks for the main content of a web page by searching for specific classes, such ***main*** or ***article***. The collected information from those sections is then passed to an LLM for filtering.
 
-***3- Content Filtering***
+***3- Content Filtering:***
 
-- Using the local LLM to filter the most important information from the extracted contents
+Once the web content is extracted from the URLs, the script starts filtering them:
+
+- We use an LLM to **filter out** the relatively uncessary-information from the extracted content, based on the user's search query.
+  
+- The LLM is used to keep only the most-important information from the extracted contents, focusing on the **Cheating Technique** description, and its **prevention methods**
   
 ***4- Data Extraction***
 
