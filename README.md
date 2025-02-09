@@ -4,15 +4,31 @@ Official repository of CheatGuard AI agent
 ## Installing requirements
 Run the following command for installing necessary python packages:
 
-$ pip install requests beautifulsoup4 ollama googlesearch-python
+``$ pip install requests beautifulsoup4 googlesearch-python google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client``
 
-Make sure also to have **ollama** installed in your system (See https://ollama.com/)
-## Selecting a local Ollama model
-This code uses *llama3.2*. 
+If you want to test the code with the GPT-4o API, make sure to install ***openai*** library for Python:
+``$ pip install openai``
 
-Feel free to test it with other Large Language Models (LLMs) for better results (See https://ollama.com/search).
+If you prefer working with a local Large Language Model (LLM), make sure to install ***ollama*** for Python:
+``$ pip install ollama``.
+As well as installing it in your system (See https://ollama.com/).
 
-Once downloaded, modify the used model in ***lines 63, 78, and 108***
+## Selecting an LLM
+This repository offers two versions of the code, one with **GPT-4o** using ***Open AI API***, and the other one with a **local LLM** using ***Ollama***.
+Feel free to use the one that suits you best.
+
+### For Cheatguard-GPT
+Use your own **Open AI API-key**.
+
+For best practices, create a variable ***OPENAI_API_KEY*** under a ***.env*** file.
+
+### For Cheatguad-LLM
+This code uses ***llama3.2*** as a local model. This choice was made for resources constraints only, as ***llama3.2:latest*** takes 2.0 GB of storage; whereas ***llama3.3:latest*** needs 43GB of free space (Visit https://ollama.com/library/llama3.2 and https://ollama.com/library/llama3.3 for more information).
+
+Feel free to test it with other LLMs for better results (Refer to https://ollama.com/search).
+
+Once downloaded, modify the used model in **line 92** and in **line 114**: `response = ollama.chat(model="YOUR_MODEL_HERE", messages=[{"role": "user", "content": prompt}])`.
+
 ## Understanding the AI-agent's workflow
 The AI Agent's pipeline encompasses **5 ordered steps**:
 
