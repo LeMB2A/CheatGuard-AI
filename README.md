@@ -47,7 +47,7 @@ The script starts by formulating a precise search query:
 
 - Feel free to modify the query in order to find the **optimal** formulation.
 
-***2. Web Search***
+***2. Web Search:***
 
 After defining a search query:
 
@@ -71,10 +71,9 @@ After finding interesting URLs, the script starts extracting meaningful content 
   ```
   main_content = soup.find("main") or soup.find("article", id="main") or soup.find("div", {"role": "main"}) or soup.find("div", {"id": "main-content"}) or soup.find("div", class_="ltx_page_content")
   ```
-  
--   The collected information from those sections is then passed to an LLM for filtering.
+- The collected information from those sections is then passed to an LLM for filtering.
 
-***4- Content Filtering:***
+***4. Content Filtering:***
 
 Once the web content is extracted from the URLs, the script starts filtering them:
 
@@ -82,7 +81,7 @@ Once the web content is extracted from the URLs, the script starts filtering the
   
 - The LLM is used to keep only the most-important information from the extracted contents, focusing on the **Cheating Technique** description, and its **prevention methods**
   
-***5- Data Formatting and E-mail Sending***
+***5. Data Formatting and E-mail Sending:***
 
 After filtering the extracted data:
 
@@ -93,36 +92,52 @@ After filtering the extracted data:
 - The e-mail is sent by using **OAuth2** with ***Gmail API***. The details on how to configure it are detailed in the next section.
 
 ## Configuring Google Cloud Console
+
 Please follow the steps below to create your Credentials:
 
-1. **Access Google Cloud Console**:
-   - Go to [Google Cloud Console](https://console.cloud.google.com/).
-   - Create a new project or select an existing project.
+***1. Access Google Cloud Console:***
 
-2. **Enable the Gmail API**:
-   - In the left-hand menu, go to **"APIs & Services" > "Library"**.
-   - Search for **"Gmail API"** and click **"Enable"**.
+- Go to [Google Cloud Console](https://console.cloud.google.com/).
 
-3. **Configure the OAuth Consent Screen**:
-   - Go to **"APIs & Services" > "OAuth Consent Screen"**.
-   - Choose **"External"** (or **"Internal"** if you're in a Google Workspace organization).
-   - Fill in the required information (application name, support email, etc.).
-   - Add the necessary scopes (permissions):
-     - `https://www.googleapis.com/auth/gmail.send`
-     - `https://www.googleapis.com/auth/gmail.compose`
-   - Save and continue.
+- Create a new project or select an existing project.
 
-4. **Create OAuth2 Credentials**:
-   - Go to **"APIs & Services" > "Credentials"**.
-   - Click on **"Create Credentials"** and choose **"OAuth Client ID"**.
-   - Select **"Desktop App"** as the application type.
-   - Give a name to your client ID.
-   - Download the JSON credentials file after creation. This file contains your `client_id` and `client_secret`.
-   - Add the two variables ***CLIENT_ID*** and ***CLIENT_SECRET*** to your **.env** file.
-  
-  ## Automating the Execution
+***2. Enable the Gmail API:***
 
-  Once everything is working, it is preferable to make the script's execution periodical automatically. We chose to execute our program at the beginning of **every month**. To set this up, please follow these steps according to what Operating System you are using:
+- In the left-hand menu, go to **"APIs & Services" > "Library"**.
+
+- Search for **"Gmail API"** and click **"Enable"**.
+
+***3. Configure the OAuth Consent Screen:***
+
+- Go to **"APIs & Services" > "OAuth Consent Screen"**.
+
+- Choose **"External"** (or **"Internal"** if you're in a Google Workspace organization).
+
+- Fill in the required information (application name, support email, etc.).
+
+- Add the necessary scopes (permissions):
+  - `https://www.googleapis.com/auth/gmail.send`
+  - `https://www.googleapis.com/auth/gmail.compose`
+- Save and continue.
+
+***4. Create OAuth2 Credentials:***
+   
+- Go to **"APIs & Services" > "Credentials"**.
+
+- Click on **"Create Credentials"** and choose **"OAuth Client ID"**.
+
+- Select **"Desktop App"** as the application type.
+
+- Give a name to your client ID.
+
+- Download the JSON credentials file after creation. This file contains your `client_id` and `client_secret`.
+
+- Add the two variables `CLIENT_ID` and `CLIENT_SECRET` to your **.env** file.
+
+
+## Automating the Execution
+
+Once everything is working, it is preferable to make the script's execution periodical automatically. We chose to execute our program at the beginning of **every month**. To set this up, please follow these steps according to what Operating System you are using:
 
 ### On Windows:
 
@@ -137,7 +152,6 @@ Please follow the steps below to create your Credentials:
      ```
      "C:\path\to\your\script_folder\cheatguard-ollama.py"
      ```
-     
    As well as the starting folder of your script as the same folder where your Python program is:  
      ```
      C:\path\to\your\script_folder\
