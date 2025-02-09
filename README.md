@@ -3,14 +3,19 @@ Official repository of CheatGuard AI agent
 
 ## Installing requirements
 Run the following command for installing necessary python packages:
+```
+pip install requests beautifulsoup4 googlesearch-python google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
+```
 
-``$ pip install requests beautifulsoup4 googlesearch-python google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client``
+If you want to test the code with the GPT-4o API, make sure to install `openai` library for Python:
+``` 
+pip install openai
+```
 
-If you want to test the code with the GPT-4o API, make sure to install ***openai*** library for Python:
-``$ pip install openai``
-
-If you prefer working with a local Large Language Model (LLM), make sure to install ***ollama*** for Python:
-``$ pip install ollama``.
+If you prefer working with a local Large Language Model (LLM), make sure to install `ollama` for Python:
+```
+pip install ollama
+```
 As well as installing it in your system (Refer to Ollama's [documentation](https://ollama.com/)).
 
 ## Selecting an LLM
@@ -20,10 +25,10 @@ Feel free to use the one that suits you best.
 ### For Cheatguard-GPT
 Use your own **Open AI API-key**.
 
-For best practices, create a variable ***OPENAI_API_KEY*** under a ***.env*** file.
+For best practices, create a variable `OPENAI_API_KEY` under a ***.env*** file.
 
 ### For Cheatguard-LLM
-This code uses ***llama3.2*** as a local model. This choice was made for resources constraints only, as ***llama3.2:latest*** takes 2.0 GB of storage; whereas ***llama3.3:latest*** needs 43GB of free space (Read the documentation of [LLAMA3.2](https://ollama.com/library/llama3.2) and [LLAMA3.3](https://ollama.com/library/llama3.3) for more information).
+This code uses ***llama3.2*** as a local model. This choice was made for resources constraints only, as `llama3.2:latest` takes 2.0 GB of storage; whereas `llama3.3:latest` needs 43GB of free space (Read the documentation of [LLAMA3.2](https://ollama.com/library/llama3.2) and [LLAMA3.3](https://ollama.com/library/llama3.3) for more information).
 
 Feel free to test it with other LLMs for better results (Refer to Ollama's [list of models](https://ollama.com/search)).
 
@@ -32,17 +37,17 @@ Once downloaded, modify the used model in **line 92** and in **line 114**: `resp
 ## Understanding the AI-agent's workflow
 The AI Agent's pipeline encompasses **5 ordered steps**:
 
-***1- Query Formulation:***
+***1. Query Formulation:***
 
 The script starts by formulating a precise search query:
 
 - The query is **hard-coded** to make the script search for the targetted content when started.
   
-- The query that we opted for is: `f"Recent Papers about Cheating in Education in {last_month_name} {last_month_year}"`, which allows to search for the latest articles published on the **previous month**. That would allow us later on to run our program once every new month.
+- The query that we opted for is: `f"Recent Papers about Cheating in Education in {last_month_name} {last_month_year}"`, which allows to search for the latest articles published the **previous month**. That would allow us later on to run our program once every new month.
 
 - Feel free to modify the query in order to find the **optimal** formulation.
 
-***2- Web Search***
+***2. Web Search***
 
 After defining a search query:
 
@@ -50,16 +55,23 @@ After defining a search query:
 
 - The number of URLs is a **parameter** that can be modified based on the need. The **default value** is: `num_results=3`.
 
-- The program allows to **restrict** the browsing to specific websites, or **exclude** some websites from the search, e.g: `search_google(user_query, num_results=3, include_sites["arxiv.org"],  exclude_sites=["researchgate.net"])`. We restricted the script from finding articles on [Research Gate](https://www.researchgate.net/) as it disallows the client from extracting content.
+- The program allows to **restrict** the browsing to specific websites, or **exclude** some websites from the search, e.g:
+  ```
+  search_google(user_query, num_results=3, include_sites["arxiv.org"], exclude_sites=["researchgate.net"])
+  ```
+  We restricted the script from finding articles on [Research Gate](https://www.researchgate.net/) as it disallows the client from extracting content.
 
-***3- Content Extraction:***
+***3. Content Extraction:***
 
 After finding interesting URLs, the script starts extracting meaningful content from them:
 
-- The script removes the contents of unwanted sections, such as ***nav*** and ***footer***, and unwanted classes, such as ***extra-services*** of [Arxiv](https://www.arxiv.org). These parts will only overwhelm the LLM when processing the web content.
+- The script removes the contents of unwanted sections, such as `<nav>` and `<footer>`, and unwanted classes, such as `"extra-services"` of [Arxiv](https://www.arxiv.org). These parts will only overwhelm the LLM when processing the web content.
   
-- After that, the script looks for the main content of a web page by searching for specific classes, such as ***main*** or ***article*** sections: `main_content = soup.find("main") or soup.find("article", id="main") or soup.find("div", {"role": "main"}) or soup.find("div", {"id": "main-content"}) or soup.find("div", class_="ltx_page_content")`.
-
+- After that, the script looks for the main content of a web page by searching for specific classes, such as `<main>` or `<article>` sections:
+  ```
+  main_content = soup.find("main") or soup.find("article", id="main") or soup.find("div", {"role": "main"}) or soup.find("div", {"id": "main-content"}) or soup.find("div", class_="ltx_page_content")
+  ```
+  
 -   The collected information from those sections is then passed to an LLM for filtering.
 
 ***4- Content Filtering:***
