@@ -38,7 +38,7 @@ The script starts by formulating a precise search query:
 
 - The query is **hard-coded** to make the script search for the targetted content when started.
   
-- The query that we opted for is: `f"Recent Papers about Cheating in Education in {datetime.now().strftime('%B') } {datetime.now().strftime('%Y')}"`, which allows to search for the latest articles published in the **current month**.
+- The query that we opted for is: `f"Recent Papers about Cheating in Education in {last_month_name} {last_month_year}"`, which allows to search for the latest articles published on the **previous month**. That would allow us later on to run our program once every new month.
 
 - Feel free to modify the query in order to find the **optimal** formulation.
 
