@@ -119,17 +119,16 @@ Please follow the steps below to create your Credentials:
 3. Select a **Monthly** trigger, and make it execute on the **1st day of each month**, at `00:01` AM, for example .
 4. Select the program to start as: `python`, and add the argument:  
      ```
-     "C:\path\to\your\ai-agent.py"
+     "C:\path\to\your\script_folder\cheatguard-gpt.py"
      ```
-   As well as the Start-in folder of your current script:  
+   As well as the starting folder of your script as the same folder where your Python program is:  
      ```
      C:\path\to\your\script_folder\
      ```
 5. Click **Finish** and ensure the task is enabled.
 
----
-## **2️⃣ Linux (Cron Job)**
-### **Steps:**
+### On Linux:
+
 1. Open a terminal.
 2. Run:
    ```sh
