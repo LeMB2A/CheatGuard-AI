@@ -78,6 +78,38 @@ After filtering the extracted data:
 
 - The formatted output is sent **by e-mail** to the **administrator** in order to validate the information before updating the **Knowledge Base**.
 
-- The e-mail is sent by using **OAuth2** with ***Gmail API***. The details on how to configure it are detailed in Section [OAuth2](https://github.com/LeMB2A/CheatGuard-AI/edit/main/README.md#oauth2)
+- The e-mail is sent by using **OAuth2** with ***Gmail API***. The details on how to configure it are detailed in the next section.
 
-## [Configure Google Cloud Console](#oauth2)
+## Configuring Google Cloud Console
+Please follow the steps below to create your Credentials:
+
+1. **Access Google Cloud Console**:
+   - Go to [Google Cloud Console](https://console.cloud.google.com/).
+   - Create a new project or select an existing project.
+
+2. **Enable the Gmail API**:
+   - In the left-hand menu, go to **"APIs & Services" > "Library"**.
+   - Search for **"Gmail API"** and click **"Enable"**.
+
+3. **Configure the OAuth Consent Screen**:
+   - Go to **"APIs & Services" > "OAuth Consent Screen"**.
+   - Choose **"External"** (or **"Internal"** if you're in a Google Workspace organization).
+   - Fill in the required information (application name, support email, etc.).
+   - Add the necessary scopes (permissions):
+     - `https://www.googleapis.com/auth/gmail.send`
+     - `https://www.googleapis.com/auth/gmail.compose`
+   - Save and continue.
+
+4. **Create OAuth2 Credentials**:
+   - Go to **"APIs & Services" > "Credentials"**.
+   - Click on **"Create Credentials"** and choose **"OAuth Client ID"**.
+   - Select **"Desktop App"** as the application type.
+   - Give a name to your client ID.
+   - Download the JSON credentials file after creation. This file contains your `client_id` and `client_secret`.
+   - Add the two variables ***CLIENT_ID*** and ***CLIENT_SECRET*** to your **.env** file.
+  
+  ## Automating the Execution
+
+  Once everything is working, it is preferable to make the script's execution periodical automatically.
+
+  - 
